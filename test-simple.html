@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background: #1B1525;
+            padding: 40px;
+            font-family: Arial;
+        }
+
+        h1 { color: white; margin-bottom: 30px; }
+
+        /* Simulating theme.neutral1 in LIGHT mode */
+        .base-button {
+            color: #222222;  /* theme.neutral1_light - nearly black! */
+            background: linear-gradient(93.06deg, #2C2761 2.66%, #6B2949 98.99%);
+            padding: 16px 32px;
+            border: 2px solid #6146A5;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: 535;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        /* Our fix with !important */
+        .button-with-important {
+            color: #ffffff !important;
+        }
+
+        /* Nested span test */
+        .button-with-important * {
+            color: #ffffff !important;
+        }
+    </style>
+</head>
+<body>
+    <h1>Light Mode Test - Arc Buttons</h1>
+
+    <div style="margin-bottom: 30px; padding: 20px; background: #2C2761; border-radius: 8px;">
+        <h2 style="color: white; margin: 0 0 15px 0;">WITHOUT !important (BROKEN)</h2>
+        <a href="#" class="base-button">Get Started</a>
+        <p style="color: #f87171; margin-top: 10px; font-size: 14px;">
+            ✗ Text color is #222222 (dark) on dark background = invisible
+        </p>
+    </div>
+
+    <div style="margin-bottom: 30px; padding: 20px; background: #2C2761; border-radius: 8px;">
+        <h2 style="color: white; margin: 0 0 15px 0;">WITH !important (FIXED)</h2>
+        <a href="#" class="base-button button-with-important">Get Started</a>
+        <p style="color: #4ade80; margin-top: 10px; font-size: 14px;">
+            ✓ Text color is #ffffff (white) = visible!
+        </p>
+    </div>
+
+    <div style="margin-bottom: 30px; padding: 20px; background: #2C2761; border-radius: 8px;">
+        <h2 style="color: white; margin: 0 0 15px 0;">WITH nested span (Testing * selector)</h2>
+        <a href="#" class="base-button button-with-important">
+            <span>Get Started (in span)</span>
+        </a>
+        <p style="color: #4ade80; margin-top: 10px; font-size: 14px;">
+            ✓ Nested text also white = working!
+        </p>
+    </div>
+
+    <div style="margin-bottom: 30px; padding: 20px; background: #2C2761; border-radius: 8px;">
+        <h2 style="color: white; margin: 0 0 15px 0;">Diagnosis</h2>
+        <p style="color: white; line-height: 1.6;">
+            <strong>Problem:</strong> BaseButton sets <code style="background: #1B1525; padding: 2px 6px; border-radius: 4px;">color: theme.neutral1</code><br>
+            <strong>In Light Mode:</strong> neutral1 = #222222 (nearly black)<br>
+            <strong>Result:</strong> Dark text on dark Arc gradient = invisible<br>
+            <strong>Solution:</strong> Use <code style="background: #1B1525; padding: 2px 6px; border-radius: 4px;">color: #ffffff !important</code> to override
+        </p>
+    </div>
+
+    <script>
+        const buttons = document.querySelectorAll('.base-button');
+        buttons.forEach((btn, i) => {
+            const color = window.getComputedStyle(btn).color;
+            console.log(`Button ${i + 1} computed color:`, color);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  build:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    volumes:
+      - ./build:/app/build
+    command: yarn build
+
+  ipfs-deploy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: ipfs-deploy
+    ports:
+      - "5001:5001"  # IPFS API
+      - "8080:8080"  # IPFS Gateway
+    volumes:
+      - ipfs-data:/data/ipfs
+      - ./build:/app/build
+    depends_on:
+      - build
+
+volumes:
+  ipfs-data:

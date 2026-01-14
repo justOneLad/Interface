@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Text Test - Arc Colors</title>
+    <style>
+        body {
+            background: #1B1525;
+            padding: 40px;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            color: #ffffff;
+            margin-bottom: 30px;
+        }
+
+        .test-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #2C2761;
+            border-radius: 8px;
+        }
+
+        .test-section h2 {
+            color: #ffffff;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        /* Test 1: Global anchor style like in theme/index.tsx */
+        a {
+            color: #6146A5;
+        }
+
+        /* Test 2: Button styled like ButtonPrimary */
+        .button-primary {
+            background-color: #6146A5;
+            font-size: 20px;
+            font-weight: 535;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            color: #ffffff !important;
+        }
+
+        .button-primary:hover,
+        .button-primary:active,
+        .button-primary:focus,
+        .button-primary:visited {
+            color: #ffffff !important;
+        }
+
+        .button-primary * {
+            color: #ffffff !important;
+        }
+
+        /* Test 3: Button CTA styled like Landing page */
+        .button-cta {
+            background: linear-gradient(93.06deg, #2C2761 2.66%, #6B2949 98.99%);
+            border: 2px solid #6146A5;
+            color: #ffffff !important;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: 535;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .button-cta:hover,
+        .button-cta:active,
+        .button-cta:focus,
+        .button-cta:visited {
+            color: #ffffff !important;
+        }
+
+        .button-cta * {
+            color: #ffffff !important;
+        }
+
+        .button-cta:hover {
+            box-shadow: 0px 0px 16px 0px #6146A5;
+        }
+
+        /* Test 4: Button without !important */
+        .button-no-important {
+            background-color: #6146A5;
+            font-size: 20px;
+            font-weight: 535;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            color: #ffffff;
+        }
+
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            background: #1B1525;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .pass {
+            color: #4ade80;
+        }
+
+        .fail {
+            color: #f87171;
+        }
+    </style>
+</head>
+<body>
+    <h1>Arc Button Text Visibility Test</h1>
+
+    <div class="test-section">
+        <h2>Test 1: Button as &lt;button&gt; element with !important</h2>
+        <button class="button-primary">Swap Button Text</button>
+        <div class="status pass">✓ Expected: White text on purple background</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 2: Button as &lt;a&gt; link (like React Router Link) with !important</h2>
+        <a href="#" class="button-primary">Get Started</a>
+        <div class="status pass">✓ Expected: White text (should override global a { color: #6146A5 })</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 3: CTA Button with gradient background and !important</h2>
+        <a href="#" class="button-cta">Get Started</a>
+        <div class="status pass">✓ Expected: White text on purple-burgundy gradient</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 4: Button with nested span (tests * selector)</h2>
+        <a href="#" class="button-primary">
+            <span>Button with nested text</span>
+        </a>
+        <div class="status pass">✓ Expected: White text even in nested span</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 5: Button as &lt;a&gt; WITHOUT !important (should fail)</h2>
+        <a href="#" class="button-no-important">This text should be purple/invisible</a>
+        <div class="status fail">✗ Expected: Purple text (global anchor style wins)</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 6: Regular link for comparison</h2>
+        <a href="#">Regular link text (should be purple #6146A5)</a>
+        <div class="status pass">✓ Expected: Purple text from global a { color }</div>
+    </div>
+
+    <script>
+        // Log computed styles for debugging
+        document.querySelectorAll('.button-primary, .button-cta, .button-no-important').forEach((btn, index) => {
+            const computedStyle = window.getComputedStyle(btn);
+            console.log(`Button ${index + 1}:`, {
+                color: computedStyle.color,
+                backgroundColor: computedStyle.backgroundColor,
+                element: btn.tagName
+            });
+        });
+    </script>
+</body>
+</html>
